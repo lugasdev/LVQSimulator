@@ -1,0 +1,22 @@
+{
+    "require": {
+        "slim/slim": "*",
+        "twig/twig": "*",
+        "slim/twig-view": "*",
+        "doctrine/dbal": "*",
+        "codeguy/upload": "*",
+        "desarrolla2/cache": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "lugas\\colorblind\\src": "src/",
+            "lugas\\colorblind\\tests": "tests/"
+        },
+        "classmap": [
+            "src/"
+        ]
+    }
+}

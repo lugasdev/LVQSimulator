@@ -1,0 +1,7 @@
+app/cache
+app/vendor
+app/composer.lock
+/public/upload/*
+!/public/upload/index.php
+/public/matlab/*
+!/public/matlab/pakar.m
