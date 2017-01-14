@@ -1,0 +1,2 @@
+# LVQSimulator
+simulasi perhitungan LVQ
