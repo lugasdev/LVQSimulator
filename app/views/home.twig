@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LVQ Simulator</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        {#        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">#}
+        <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css"  >
+        <link href="assets/css/custom.css" rel="stylesheet" >
+    </head>
+    <body>
+        <div class="col-md-10 col-md-offset-1">
+            <div class="container-fluid" >
+                <div class="row">
+                    <div class="col-md-12 top" >
+
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">Komponen LVQ </div>
+                            <div class="panel-body">
+                                <form method="post" action="#" class="form_lvqSimulator">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label >Banyak Data Bobot</label>
+                                            <input type="number" min="2" value="2" name="bobot" class="form-control" required="" id="bobot" >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label >Banyak Pelatihan</label>
+                                            <input type="number" min="2" value="2" name="pelatihan" class="form-control" required="" id="pelatihan" >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label >Banyak Ciri</label>
+                                            <input type="number" min="2" value="2" name="kolom" class="form-control" required="" id="kolom" >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label >Max Iterasi</label>
+                                            <input type="number" min="1" name="max" value="1" class="form-control" required="" >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label >Alfa</label>
+                                            <input type="number" min="0" step="any" value="0.1" name="alfa" class="form-control" required="" >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label >Dec Alfa</label>
+                                            <input type="number" min="0" step="any" value="0.01" name="decalfa" class="form-control" required="" >
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h4>Data Bobot</h4>
+                                        <table class="table table-hover table-bordered" id="tabel_data"></table>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <h4>Data Pelatihan</h4>
+                                        <table class="table table-hover table-bordered" id="tabel_latihan"></table>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-primary btn-submit" name="submit"> Latih Data </button>
+                                        {#                                        <a href="/" class="btn btn-danger" >Reset</a>#}
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-12 col-hasil" style="display: none" >
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">HASIL LVQ</div>
+                            <div class="panel-body hasil_body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+            <!-- Latest compiled and minified JavaScript -->
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+            <script >
+
+                $().ready(function () {
+
+                    $("#bobot").on("change", function () {
+                        generateTable();
+                    });
+                    $("#pelatihan").on("change", function () {
+                        generateTable();
+                    });
+                    $("#kolom").on("change", function () {
+                        generateTable();
+                    });
+
+                    function generateTable()
+                    {
+                        KOLOM = $("#kolom").val();
+                        PELATIHAN = $("#pelatihan").val();
+                        BOBOT = $("#bobot").val();
+
+                        head_table = "<tr>";
+                        head_table += "<th>No.</th>";
+                        for (i = 0; i < KOLOM; i++) {
+                            head_table += "<th>" + (i + 1) + "</th>";
+                        }
+                        head_table += "<th>T</th>";
+                        head_table += "<tr>";
+
+                        bodi = "";
+                        for (i = 0; i < BOBOT; i++) {
+                            bodi += "<tr>";
+                            bodi += "<td>" + (i + 1) + "</td>";
+                            for (j = 0; j < KOLOM; j++) {
+                                isi = $(".w_" + i + "_" + j).val();
+                                bodi += "<td><input required type='number' class='form-control w_" + i + "_" + j + "' name='w[" + i + "][" + j + "]' value='" + isi + "' /></td>";
+                            }
+                            isi_t = $(".t_" + i).val();
+                            bodi += "<td> <input required type='number' class='form-control t_" + i + "' name='t[" + i + "]' value='" + isi_t + "' /> </td>";
+                            bodi += "</tr>";
+                        }
+                        $("#tabel_data").html(head_table + bodi);
+
+                        bodi = "";
+                        for (i = 0; i < PELATIHAN; i++) {
+                            bodi += "<tr>";
+                            bodi += "<td>" + (i + 1) + "</td>";
+                            for (j = 0; j < KOLOM; j++) {
+                                isi = $(".x_" + i + "_" + j).val();
+                                bodi += "<td><input required type='number' class='form-control x_" + i + "_" + j + "' name='x[" + i + "][" + j + "]' value='" + isi + "' /></td>";
+                            }
+                            isi_t = $(".tx_" + i).val();
+                            bodi += "<td> <input required type='number' class='form-control tx_" + i + "' name='tx[" + i + "]' value='" + isi_t + "' /> </td>";
+                            bodi += "</tr>";
+                        }
+
+                        $("#tabel_latihan").html(head_table + bodi);
+                    }
+
+
+                    generateTable();
+
+                    $(".form_lvqSimulator").on("submit", function () {
+                        $(".btn-submit").html("please wait...");
+                        $.post("", $(".form_lvqSimulator").serialize(), function (data) {
+                            $(".col-hasil").show();
+                            $(".hasil_body").html(data);
+                            $(".btn-submit").html("Latih Data");
+                        });
+                        return false;
+                    })
+                });
+
+            </script>
+    </body>
+</html>

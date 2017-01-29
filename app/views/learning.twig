@@ -1,0 +1,104 @@
+{% if debug == true %}
+    <table class="table table-hover">
+        {% for k,h in hitung.iterasi %}
+            <tr>
+                <th rowspan="2">ITERASI KE-{{ k + 1 }}</th>
+                <td>
+                    {% for k2,d in h.hitung %}
+                        <table class="table table-hover">
+                            <tr>
+                                <th>
+                                    Data Ke-{{ k2 + 1 }} [
+                                    {% for kk,dt in d.data %}
+                                        {{ dt }} {% if loop.last == false %} , {% endif %}
+                                    {% endfor %}
+                                    ]
+                                </th>
+                            </tr>
+                            {% for k3,hj in d.jarak_hitungan %}
+                                <tr>
+                                    <td><small>Bobot Ke-{{ k3 + 1 }}</small></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {{ hj | raw}}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            <tr>
+                                <th>Jarak terkecil pada bobot ke - {{ d.jarak_terpendek_index }} </th>
+                            </tr>
+                            {#<tr>
+                                <th>    Jarak terkecil pada bobot ke - {{ d.jarak_terpendek + 1 }} </th>
+                            </tr>#}
+                            <tr>
+                                <th>Update bobot ke - {{ d.jarak_terpendek_index }} </th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <small>
+                                        {% for k4,wbh in d.w_baru_hitungan %}
+                                            {{ wbh }}<br>
+                                        {% endfor %}
+                                    </small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Bobot Baru</th>
+                            </tr>
+                            <tr>
+                                <td>
+
+                                    {% for k5,wb in d.w_baru %}
+                                        {{ k5 }} =>
+                                        [
+                                        {% for k6,wbb in wb %}
+                                            {{ wbb }} {% if loop.last == false %} , {% endif %}
+                                        {% endfor %}
+                                        ]
+                                        {% if loop.last == false %}<br>{% endif %}
+                                    {% endfor %}
+
+                                </td>
+                            </tr>
+                        </table>
+                        <hr>
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <small>
+                        {% for k,r in h.rekap %}
+                            Data ke-{{ k + 1 }} <br>Hasil Perhitungan di kelas {{ r.jarak }} |
+                            Hasil Seharusnya di kelas {{ r.jarak_seharusnya }} |
+                            Status <b>{% if r.status == 1 %} OK {% else %} SALAH {% endif %}</b><br>
+                        {% endfor %}
+                    </small>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% else %}
+
+    Total Benar = {{ hitung.uker.status_true }}<br>
+    Total Benar = {{ hitung.uker.status_false }}<br>
+    Presetase keberhasilan = {{ hitung.uker.persen }} %<hr>
+
+    {% for k5,wb in hitung.bobot_akhir %}
+        {{ k5 }} =>
+        [
+        {% for k6,wbb in wb %}
+            {{ wbb }} {% if loop.last == false %} , {% endif %}
+        {% endfor %}
+        ]
+        {% if loop.last == false %}<br>{% endif %}
+    {% endfor %}
+    <hr>
+    {% for k,r in hitung.rekap %}
+        Data ke-{{ k + 1 }} <br>Hasil Perhitungan di kelas {{ r.jarak }} |
+        Hasil Seharusnya di kelas {{ r.jarak_seharusnya }} |
+        Status <b>{% if r.status == 1 %} OK {% else %} SALAH {% endif %}</b><br>
+    {% endfor %}
+{% endif %}
