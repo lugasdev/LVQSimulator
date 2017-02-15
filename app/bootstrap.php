@@ -9,25 +9,19 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 $app = new \Slim\App();
-$app->add( new \Lugas\Colorblind\MyAuth() );
 
 $container = $app->getContainer();
 $container['view'] = function ($container) {
-    $view = new \Lugas\Colorblind\Twig;
+    $view = new Lugas\LvqSimulator\Twig;
 
     return $view->view();
 };
 
 $container['errorHandler'] = function ($c) {
     return function ($request, $response, $exception) use ($c) {
-        if (!strpos(get_class($exception), "CbException") === false) {
-            $_SESSION["flash"]["alert"]["danger"] = $exception->getMessage();
-            return $c['response']->withStatus(302)->withHeader('Location', $_SERVER['HTTP_REFERER']);
-        } else {
-            return $c['response']->withStatus(500)
-                            ->withHeader('Content-Type', 'text/html')
-                            ->write($exception->getMessage());
-        }
+        return $c['response']->withStatus(500)
+                ->withHeader('Content-Type', 'text/html')
+                        ->write($exception->getMessage());
     };
 };
 
